@@ -158,6 +158,21 @@ class _CalendarState extends State<Calendar> {
             _selectedDate.year, _selectedDate.month, _selectedDate.day)] ??
         [];
   }
+  
+  //from lior git
+  @override
+  void didUpdateWidget(covariant Calendar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget != oldWidget){
+      _selectedEvents = widget.events?[DateTime(
+          _selectedDate.year, _selectedDate.month, _selectedDate.day)] ??
+          [];
+      _selectedDate = widget.initialDate ?? DateTime.now();
+      selectedWeekDays = Utils.daysInRange(
+          _firstDayOfWeek(_selectedDate), _lastDayOfWeek(_selectedDate))
+          .toList();
+    }
+  }
 
   Widget get nameAndIconRow {
     var todayIcon;
