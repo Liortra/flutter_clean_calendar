@@ -164,13 +164,20 @@ class _CalendarState extends State<Calendar> {
   void didUpdateWidget(covariant Calendar oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget != oldWidget){
-      _selectedEvents = widget.events?[DateTime(
-          _selectedDate.year, _selectedDate.month, _selectedDate.day)] ??
-          [];
       _selectedDate = widget.initialDate ?? DateTime.now();
+      selectedMonthsDays = _daysInMonth(_selectedDate);
       selectedWeekDays = Utils.daysInRange(
           _firstDayOfWeek(_selectedDate), _lastDayOfWeek(_selectedDate))
           .toList();
+      initializeDateFormatting(widget.locale, null).then((_) => setState(() {
+        var monthFormat =
+        DateFormat('MMMM yyyy', widget.locale).format(_selectedDate);
+        displayMonth =
+        '${monthFormat[0].toUpperCase()}${monthFormat.substring(1)}';
+      }));
+      _selectedEvents = widget.events?[DateTime(
+          _selectedDate.year, _selectedDate.month, _selectedDate.day)] ??
+          [];
     }
   }
 
